@@ -1,0 +1,50 @@
+// Initialisation du panier
+let cart = [];
+
+// Ajouter un produit au panier
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+        const name = button.getAttribute('data-name');
+        const price = parseFloat(button.getAttribute('data-price'));
+
+        // Ajouter le produit au tableau du panier
+        cart.push({ name, price });
+        updateCart();
+    });
+});
+
+// Mettre à jour l'affichage du panier
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const totalPrice = document.getElementById('total-price');
+
+    // Réinitialiser la liste des articles
+    cartItems.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.price}€`;
+
+        // Bouton pour retirer l'article
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Retirer';
+        removeBtn.addEventListener('click', () => {
+            cart.splice(index, 1);
+            updateCart();
+        });
+
+        li.appendChild(removeBtn);
+        cartItems.appendChild(li);
+        total += item.price;
+    });
+
+    totalPrice.textContent = `Total : ${total}€`;
+}
+
+// Formulaire de contact
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message envoyé ! Nous vous répondrons bientôt.');
+    document.getElementById('contact-form').reset();
+});
